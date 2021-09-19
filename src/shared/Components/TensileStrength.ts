@@ -11,8 +11,6 @@ class TensileStrength implements Component.ComponentClass {
 
 	private _vectorForces: VectorForce[] = [];
 
-	private static highestForce = 0;
-
 	constructor(instance: BasePart) {
 		this._instance = instance;
 	}
