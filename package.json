@@ -23,6 +23,7 @@
     "typescript": "^4.4.3"
   },
   "dependencies": {
-    "@rbxts/knit": "^0.0.21-alpha.0"
+    "@rbxts/knit": "^0.0.21-alpha.0",
+    "@rbxts/services": "^1.2.0"
   }
 }
