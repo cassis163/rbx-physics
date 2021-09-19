@@ -1,3 +1,7 @@
-import { makeHello } from "shared/module";
+import { Component, KnitClient as Knit } from "@rbxts/knit";
+import { ReplicatedStorage, StarterPlayer } from "@rbxts/services";
 
-print(makeHello("main.client.ts"));
+Knit.Start().await();
+
+Component.Auto(ReplicatedStorage.WaitForChild("TS").WaitForChild("Components"));
+// Component.Auto(StarterPlayer.WaitForChild("StarterPlayerScripts").WaitForChild("TS").WaitForChild("Components"));

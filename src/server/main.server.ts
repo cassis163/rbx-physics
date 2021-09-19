@@ -1,3 +1,7 @@
-import { makeHello } from "shared/module";
+import { Component, KnitServer as Knit } from "@rbxts/knit";
+import { ReplicatedStorage, ServerScriptService } from "@rbxts/services";
 
-print(makeHello("main.server.ts"));
+Knit.Start().await();
+
+Component.Auto(ReplicatedStorage.WaitForChild("TS").WaitForChild("Components"));
+// Component.Auto(ServerScriptService.WaitForChild("TS").WaitForChild("Components"));
