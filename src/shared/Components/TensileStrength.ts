@@ -28,8 +28,10 @@ class TensileStrength implements Component.ComponentClass {
 				: this._instance.CFrame.VectorToWorldSpace(vectorForce.Force);
 		});
 		const totalForce = forces.reduce((previous, current) => previous.add(current));
+		const surfaceArea = this._GetSurfaceArea();
+		const pressure = totalForce.div(surfaceArea);
 
-		if (totalForce.Magnitude > TENSILE_STRENGTH) {
+		if (pressure.Magnitude > TENSILE_STRENGTH) {
 			this._instance.BreakJoints();
 			this.Destroy();
 		}
@@ -37,6 +39,12 @@ class TensileStrength implements Component.ComponentClass {
 
 	public Destroy() {
 		CollectionService.RemoveTag(this._instance, TensileStrength.Tag);
+	}
+
+	private _GetSurfaceArea(): Vector3 {
+		const size = this._instance.Size;
+
+		return new Vector3(size.Y * size.Z, size.X * size.Z, size.X * size.Y);
 	}
 }
 
