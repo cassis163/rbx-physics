@@ -2,7 +2,7 @@ import { Component } from "@rbxts/knit";
 import { CollectionService } from "@rbxts/services";
 import { convertMeterAndKiloGram } from "shared/Math/MetricUnits";
 
-const TENSILE_STRENGTH = convertMeterAndKiloGram(158600, -1, 1);
+const TENSILE_STRENGTH = convertMeterAndKiloGram(2e4, -1, 1);
 
 class TensileStrength implements Component.ComponentClass {
 	public static Tag = "TensileStrength";
@@ -27,7 +27,7 @@ class TensileStrength implements Component.ComponentClass {
 				? vectorForce.Force
 				: this._instance.CFrame.VectorToWorldSpace(vectorForce.Force);
 		});
-		const totalForce = forces.reduce((previous, current) => previous.add(current));
+		const totalForce = forces.reduce((previous, current) => previous.add(current), new Vector3());
 		const surfaceArea = this._GetSurfaceArea();
 		const pressure = totalForce.div(surfaceArea);
 
