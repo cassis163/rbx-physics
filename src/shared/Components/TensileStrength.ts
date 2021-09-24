@@ -2,7 +2,7 @@ import { Component } from "@rbxts/knit";
 import { CollectionService } from "@rbxts/services";
 import { convertMeterAndKiloGram } from "shared/Math/MetricUnits";
 
-const TENSILE_STRENGTH = convertMeterAndKiloGram(2e4, -1, 1);
+const TENSILE_STRENGTH = convertMeterAndKiloGram(4e3, -1, 1);
 
 class TensileStrength implements Component.ComponentClass {
 	public static Tag = "TensileStrength";
@@ -31,7 +31,11 @@ class TensileStrength implements Component.ComponentClass {
 		const surfaceArea = this._GetSurfaceArea();
 		const pressure = totalForce.div(surfaceArea);
 
-		if (pressure.Magnitude > TENSILE_STRENGTH) {
+		if (
+			math.abs(pressure.X) > TENSILE_STRENGTH &&
+			math.abs(pressure.Y) > TENSILE_STRENGTH &&
+			math.abs(pressure.Z) > TENSILE_STRENGTH
+		) {
 			this._instance.BreakJoints();
 			this.Destroy();
 		}

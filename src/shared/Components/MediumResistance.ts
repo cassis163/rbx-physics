@@ -1,19 +1,20 @@
 import { Component, Janitor } from "@rbxts/knit";
 import { Workspace } from "@rbxts/services";
 import { Visualizer } from "@rbxts/visualize";
+import mapVector from "shared/Math/mapVector";
 import { convertMeterAndKiloGram } from "shared/Math/MetricUnits";
 import squareVector from "shared/Math/squareVector";
 import transformDebugVector from "shared/Math/transformDebugVector";
 import { stabilizeVector3 } from "shared/Math/VectorStablization";
 
 // Raycasting
-const OBSTRUCTION_DISTANCE = 8;
+const OBSTRUCTION_DISTANCE = 20;
 // Physics
 const AIR_DENSITY = convertMeterAndKiloGram(1.225, -3, 1);
 const RATIO_OF_SPECIFIC_HEATS = 1.4;
 const STATIC_AIR_PRESSURE = convertMeterAndKiloGram(100e3, -1, 1);
 // Debugging
-const DEBUG = false;
+const DEBUG = true;
 
 class MediumResistance implements Component.ComponentClass {
 	public static Tag = "MediumResistance";
@@ -147,7 +148,7 @@ class MediumResistance implements Component.ComponentClass {
 			);
 		}
 
-		return raycastResult ? 1 - raycastResult.Position.sub(origin).Magnitude / OBSTRUCTION_DISTANCE : 1;
+		return raycastResult ? 0 : 1;
 	}
 
 	private _GetSurfaceArea(): Vector3 {
