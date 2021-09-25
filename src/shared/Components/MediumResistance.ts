@@ -148,7 +148,7 @@ class MediumResistance implements Component.ComponentClass {
 			);
 		}
 
-		return raycastResult ? 0 : 1;
+		return raycastResult ? raycastResult.Position.sub(origin).Magnitude / OBSTRUCTION_DISTANCE : 1;
 	}
 
 	private _GetSurfaceArea(): Vector3 {
