@@ -8,6 +8,7 @@ Tags are useful for binding object related scripts (mainly physics for Parts in 
 * Rojo (see https://rojo.space/) for Roblox Studio and editor
 * An editor (Visual Studio Code for instance)
 * Foreman CLI (see https://github.com/Roblox/foreman)
+* Tag Editor plugin for Roblox Studio
 
 ### Setup
 1. Clone the repository
