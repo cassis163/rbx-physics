@@ -1,7 +1,6 @@
 import { Component, Janitor } from "@rbxts/knit";
 import { Workspace } from "@rbxts/services";
 import { Visualizer } from "@rbxts/visualize";
-import mapVector from "shared/Math/mapVector";
 import { convertMeterAndKiloGram } from "shared/Math/MetricUnits";
 import squareVector from "shared/Math/squareVector";
 import transformDebugVector from "shared/Math/transformDebugVector";
@@ -15,6 +14,8 @@ const RATIO_OF_SPECIFIC_HEATS = 1.4;
 const STATIC_AIR_PRESSURE = convertMeterAndKiloGram(100e3, -1, 1);
 // Debugging
 const DEBUG = true;
+
+const NEAR_ZERO = 1e-2;
 
 class MediumResistance implements Component.ComponentClass {
 	public static Tag = "MediumResistance";
@@ -45,6 +46,10 @@ class MediumResistance implements Component.ComponentClass {
 		this._buoyantVectorForce = this._CreateVectorForce(this._attachment, "BuoyantVectorForce");
 		this._buoyantVectorForce.RelativeTo = Enum.ActuatorRelativeTo.World;
 		this._raycastParams = this._CreateRaycastParams();
+
+		// if (this._instance.Anchored || this._instance.IsGrounded()) {
+		// 	warn(`${instance.Name} cannot be affected by forces.`);
+		// }
 	}
 
 	public Destroy() {
@@ -61,17 +66,17 @@ class MediumResistance implements Component.ComponentClass {
 			this._instance.GetVelocityAtPosition(this._instance.Position),
 		).mul(-1);
 
-		if (velocity.Magnitude > 1e-4) {
+		if (velocity.Magnitude > NEAR_ZERO) {
 			const obstructionVector: Vector3 = this._GetObstructionVector(velocity);
 
 			this._resistanceTorque.Torque = this._GetResistanceTorque(obstructionVector, surfaceArea);
 			this._resistanceVectorForce.Force = this._GetResistanceForce(velocity, obstructionVector, surfaceArea);
-			this._buoyantVectorForce.Force = this._GetBuoyantForce();
 		} else {
 			this._resistanceTorque.Torque = new Vector3();
 			this._resistanceVectorForce.Force = new Vector3();
-			this._buoyantVectorForce.Force = new Vector3();
 		}
+
+		this._buoyantVectorForce.Force = this._GetBuoyantForce();
 	}
 
 	private _GetResistanceTorque(obstructionVector: Vector3, surfaceArea: Vector3): Vector3 {
@@ -161,8 +166,8 @@ class MediumResistance implements Component.ComponentClass {
 		const vectorForce: VectorForce = new Instance("VectorForce");
 		vectorForce.Name = name;
 		vectorForce.Force = new Vector3();
-		vectorForce.Attachment0 = attachment;
 		vectorForce.Parent = this._instance;
+		vectorForce.Attachment0 = attachment;
 
 		this._janitor.Add(vectorForce);
 
@@ -183,8 +188,8 @@ class MediumResistance implements Component.ComponentClass {
 	private _CreateTorque(attachment: Attachment, name: string): Torque {
 		const torque: Torque = new Instance("Torque");
 		torque.Name = name;
-		torque.Attachment0 = attachment;
 		torque.Parent = this._instance;
+		torque.Attachment0 = attachment;
 
 		this._janitor.Add(torque);
 
